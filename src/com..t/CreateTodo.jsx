@@ -53,6 +53,7 @@ export const CreateTodo = ({ state, setState }) => {
     } catch (e) {
       console.log(e.message);
     }
+    
   };
   //добавить файл
   const filez = (e) => {
@@ -60,7 +61,7 @@ export const CreateTodo = ({ state, setState }) => {
     const name = ref.current.files[0];
     setFile({ ...file, name: name, path: name.size });
   };
-  //файл в корзину. upload {добавить в кэш через n сек, обновить?, тип файла }
+  //файл в корзину.
   useEffect(() => {
     if (!file.name) {
       return;
@@ -69,7 +70,9 @@ export const CreateTodo = ({ state, setState }) => {
       +(async function () {
         const { data, error } = await supabase.storage
           .from("bucket")
-          .upload(`folder/subfolder/${file.path}`, file.name);
+          .upload(`folder/subfolder/${file.path}`, file.name, {
+            cacheControl: '3600', upsert: true
+          });
       })();
     } catch (e) {
       console.log(e.message);

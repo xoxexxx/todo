@@ -26,34 +26,29 @@ export const App = () => {
   }
   //Подгружаем базу данных и сетим в стейт контекста приложения
   useEffect(() => {
-    try {
-      +(async function updateTodo() {
-        let { data, error } = await supabase.from("todo_list").select();
-        setTodo(data);
-      })();
-      
-    } catch(e) {
-      console.log(e.message);
-    }
+    +(async function updateTodo() {
+      let { data, error } = await supabase.from("todo_list").select();
+      setTodo(data);
+    })();
   }, [state]);
-  console.log('state', todo)
+
+  console.log("state", todo);
   return (
     <>
       <CreateTodo state={state} setState={setState} />
       {/* мап всего списка, пропсы текущего листа для отрисовки и функция удалить */}
-      {/* фильтруем ошибку unefined при асинхронном запросе */}
-      {todo !== null &&
-        todo
-          .filter((x) => x.todos)
-          .map((x) => (
-            <Todo
-              state={state}
-              setState={setState}
-              key={x.key}
-              todos={x.todos}
-              del={del}
-            />
-          ))}
+      {/* фильтруем */}
+      {todo
+        .filter((x) => x.todos)
+        .map((x) => (
+          <Todo
+            state={state}
+            setState={setState}
+            key={x.key}
+            todos={x.todos}
+            del={del}
+          />
+        ))}
     </>
   );
 };
