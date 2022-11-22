@@ -34,7 +34,7 @@ export const Todo = ({ todos, del, state, setState }) => {
     +(async function get() {
       const { data, error } = await supabase.storage
         .from("bucket")
-        .createSignedUrl(`folder/subfolder/${todos.index}`, 6000, {
+        .createSignedUrl(`folder/subfolder/${todos.path}`, 6000, {
           download: true,
         });
         setUrl(data?.signedUrl)

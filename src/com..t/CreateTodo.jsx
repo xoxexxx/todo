@@ -16,7 +16,7 @@ export const CreateTodo = ({ state, setState }) => {
     "https://nrlqbgyndjdhhmnmgutu.supabase.co",
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ybHFiZ3luZGpkaGhtbm1ndXR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2Njg5ODgxNzgsImV4cCI6MTk4NDU2NDE3OH0.gJ6ILUDqvmB-Xc-PEipet_o9AtqufW_rWyIhDSivXZw"
   );
-  const [file, setFile] = useState({ name: "", src: "" });
+  const [file, setFile] = useState({ name: "", path: "" });
   
   //создаем ссылку на объект
   const ref = createRef();
@@ -40,7 +40,7 @@ export const CreateTodo = ({ state, setState }) => {
             date: value.date,
             performed: false,
             filename: file.name,
-            index: file.id
+            path: file.path
           },
           key: new Date(),
         });
@@ -49,6 +49,7 @@ export const CreateTodo = ({ state, setState }) => {
       setState((state) => state + 1);
       setTodo([...todo, data()]);
       setValue({ ...value, title: "", description: "" });
+      
     } catch (e) {
       console.log(e.message);
     }
@@ -57,24 +58,23 @@ export const CreateTodo = ({ state, setState }) => {
   const filez = (e) => {
     e.preventDefault();
     const name = ref.current.files[0];
-    setFile({ ...file, name: name, id: ref.current.files[0].size});
+    setFile({ ...file, name: name, path: name.size });
   };
-  
-  //файл в корзину. upload {добавить вкэш через n сек, обновить?, тип файла }
+  //файл в корзину. upload {добавить в кэш через n сек, обновить?, тип файла }
   useEffect(() => {
     if (!file.name) {
       return;
     }
-    console.log(todo)
     try {
       +(async function () {
         const { data, error } = await supabase.storage
           .from("bucket")
-          .upload(`folder/subfolder/${file.id}`, file.name);
+          .upload(`folder/subfolder/${file.path}`, file.name);
       })();
     } catch (e) {
       console.log(e.message);
     }
+    setState(state => state + 1)
   }, [file]);
 
   return (

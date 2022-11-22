@@ -31,10 +31,12 @@ export const App = () => {
         let { data, error } = await supabase.from("todo_list").select();
         setTodo(data);
       })();
+      
     } catch(e) {
       console.log(e.message);
     }
   }, [state]);
+  console.log('state', todo)
   return (
     <>
       <CreateTodo state={state} setState={setState} />
