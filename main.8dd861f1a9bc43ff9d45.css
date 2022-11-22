@@ -60,10 +60,4 @@ textarea:disabled {
   text-decoration: none;
   color: white;
 }
-.error {
-  background-color: rgba(100, 0, 0, 0.5) !important;
-}
-.todo:last-child:not(.performed) {
-  margin-bottom: 200px !important;
-}
 
