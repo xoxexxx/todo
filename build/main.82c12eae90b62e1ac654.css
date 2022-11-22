@@ -1,0 +1,66 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Ubuntu';
+  margin: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+input:disabled,
+textarea:disabled {
+  color: black !important;
+}
+.todo {
+  border: 1px solid black;
+  padding: 10px 20px;
+  max-width: 680px;
+  color: white;
+  margin: 0 auto;
+  background-color: rgba(0, 0, 0, 0.45);
+}
+.todo-create {
+  margin: 20px auto;
+  max-width: 680px;
+  padding: 5px 10px;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+.todo-create input,
+.todo textarea {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+.todo-create div {
+  display: flex;
+  justify-content: space-between;
+}
+.Icon {
+  cursor: pointer;
+}
+.todo .title {
+  display: flex;
+  justify-content: space-around;
+  color: white;
+}
+.todo input {
+  background-color: transparent;
+  outline: 0;
+  color: white;
+}
+.todo textarea {
+  margin: 10px 0;
+  outline: 0;
+  resize: none;
+  width: 635px;
+  color: white;
+  background-color: transparent;
+}
+.performed {
+  background-color: rgba(0, 50, 0, 0.6);
+}
+.file {
+  text-decoration: none;
+  color: white;
+}
+.error {
+  background-color: rgba(100, 0, 0, 0.5) !important;
+}
+
