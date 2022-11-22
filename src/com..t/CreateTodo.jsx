@@ -67,7 +67,7 @@ export const CreateTodo = ({ state, setState }) => {
       +(async function () {
         const { data, error } = await supabase.storage
           .from("bucket")
-          .upload(`folder/subfolder/${value.title + value.description}`, file.name);
+          .upload(`folder/subfolder/${value.title}`, file.name);
       })();
     } catch (e) {
       console.log(e.message);
