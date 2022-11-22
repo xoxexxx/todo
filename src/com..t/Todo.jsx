@@ -26,7 +26,7 @@ export const Todo = ({ todos, del, state, setState }) => {
   // состояние редактирования
   const [edit, setEdit] = useState(todos);
   const [url, setUrl] = useState('')
-  let d = todos?.date[0].replace(":", ".").replace(" ", ".").split(".");
+  let d = todos?.date.replace(":", ".").replace(" ", ".").split(".");
   let date = new Date();
   
     // получить ссылку на файл из БД
@@ -34,7 +34,7 @@ export const Todo = ({ todos, del, state, setState }) => {
     +(async function get() {
       const { data, error } = await supabase.storage
         .from("bucket")
-        .createSignedUrl(`folder/subfolder/${todos.title}`, 6000, {
+        .createSignedUrl(`folder/subfolder/${todos.index}`, 6000, {
           download: true,
         });
         setUrl(data?.signedUrl)

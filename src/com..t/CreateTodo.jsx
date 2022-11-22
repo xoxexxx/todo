@@ -40,14 +40,15 @@ export const CreateTodo = ({ state, setState }) => {
             date: value.date,
             performed: false,
             filename: file.name,
+            index: file.id
           },
           key: new Date(),
         });
       }
       // обновить стейт
+      setState((state) => state + 1);
       setTodo([...todo, data()]);
       setValue({ ...value, title: "", description: "" });
-      setState((state) => state + 1);
     } catch (e) {
       console.log(e.message);
     }
@@ -56,18 +57,20 @@ export const CreateTodo = ({ state, setState }) => {
   const filez = (e) => {
     e.preventDefault();
     const name = ref.current.files[0];
-    setFile({ ...file, name: name });
+    setFile({ ...file, name: name, id: ref.current.files[0].size});
   };
-  //файл в корзину. upload {добавить в кэш через n сек, обновить?, тип файла }
+  
+  //файл в корзину. upload {добавить вкэш через n сек, обновить?, тип файла }
   useEffect(() => {
     if (!file.name) {
       return;
     }
+    console.log(todo)
     try {
       +(async function () {
         const { data, error } = await supabase.storage
           .from("bucket")
-          .upload(`folder/subfolder/${value.title}`, file.name);
+          .upload(`folder/subfolder/${file.id}`, file.name);
       })();
     } catch (e) {
       console.log(e.message);

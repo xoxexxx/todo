@@ -15,7 +15,7 @@ export const App = () => {
   // контекст состояния todo
   const [todo, setTodo] = useContext(TodoContext);
   //стейт зависимости useEffect-а
-  const [state, setState] = useState(0);
+  const [state, setState] = useState(1);
   // удалить итем из БД
   async function del(todos) {
     const { error } = await supabase
