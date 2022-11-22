@@ -16,22 +16,19 @@ export const CreateTodo = ({ state, setState }) => {
     "https://nrlqbgyndjdhhmnmgutu.supabase.co",
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ybHFiZ3luZGpkaGhtbm1ndXR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2Njg5ODgxNzgsImV4cCI6MTk4NDU2NDE3OH0.gJ6ILUDqvmB-Xc-PEipet_o9AtqufW_rWyIhDSivXZw"
   );
-  const [file, setFile] = useState({ name: '', src: '' });
-  const [err, setErr] = useState(false);
+  const [file, setFile] = useState({ name: "", src: "" });
+  
   //создаем ссылку на объект
   const ref = createRef();
+  // //регулярка
+   
   // функция события клик (создать todo) подгрузить в БД
   const handlerAdd = () => {
-    if (file.name == '') {
-      setFile('none')
+    if (file.name == "") {
+      setFile("none");
     }
     if (value.title == "") return;
-    //регулярка
-    /[0-2][0-9][,-:][0-5][0-9][ ][0-3][0-9][.][0-1][0-9][.][0-2][0-9][0-9][0-9]/u.test(
-      value.date
-    )
-      ? setErr(false)
-      : setErr(true);
+    
     //запрос БД
     try {
       async function data() {
@@ -42,29 +39,24 @@ export const CreateTodo = ({ state, setState }) => {
             description: value.description,
             date: value.date,
             performed: false,
-            files: {
-              filename: file.name,
-            },
+            filename: file.name,
           },
           key: new Date(),
         });
-        setTodo(data);
-        console.log(todo);
       }
       // обновить стейт
       setTodo([...todo, data()]);
       setValue({ ...value, title: "", description: "" });
       setState((state) => state + 1);
     } catch (e) {
-      console.log(e);
+      console.log(e.message);
     }
   };
   //добавить файл
-  const addFile = (e) => {
+  const filez = (e) => {
     e.preventDefault();
-    const name = ref.current.files[0].name;
+    const name = ref.current.files[0];
     setFile({ ...file, name: name });
-    console.log(e);
   };
   //файл в корзину. upload {добавить в кэш через n сек, обновить?, тип файла }
   useEffect(() => {
@@ -75,16 +67,13 @@ export const CreateTodo = ({ state, setState }) => {
       +(async function () {
         const { data, error } = await supabase.storage
           .from("bucket")
-          .upload(file.name, file.name, {
-            cacheControl: "3600",
-            upsert: true,
-          });
+          .upload(`folder/subfolder/${value.title + value.description}`, file.name);
       })();
     } catch (e) {
-      console.log(e)
+      console.log(e.message);
     }
-    
   }, [file]);
+
   return (
     <div className="todo todo-create">
       <div>
@@ -94,7 +83,6 @@ export const CreateTodo = ({ state, setState }) => {
           onChange={(e) => setValue({ ...value, title: e.target.value })}
         />{" "}
         <input
-          className={`${err && "error"}`}
           placeholder="FORMAT: 00:00 01.01.1970"
           value={value.date}
           onChange={(e) =>
@@ -116,9 +104,8 @@ export const CreateTodo = ({ state, setState }) => {
       <input
         name="upload"
         type="file"
-        accept="image/*"
         ref={ref}
-        onChange={addFile}
+        onChange={filez}
       />
     </div>
   );

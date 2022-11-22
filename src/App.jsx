@@ -35,7 +35,6 @@ export const App = () => {
       console.log(e.message);
     }
   }, [state]);
-
   return (
     <>
       <CreateTodo state={state} setState={setState} />

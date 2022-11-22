@@ -25,22 +25,21 @@ export const Todo = ({ todos, del, state, setState }) => {
   const [disabled, setDisabled] = useState(true); //блокировка
   // состояние редактирования
   const [edit, setEdit] = useState(todos);
-  let d = todos?.date.replace(":", ".").replace(" ", ".").split(".");
+  const [url, setUrl] = useState('')
+  let d = todos?.date[0].replace(":", ".").replace(" ", ".").split(".");
   let date = new Date();
-  // получить ссылку на файл из БД
+  
+    // получить ссылку на файл из БД
   useEffect(() => {
-    async function get() {
+    +(async function get() {
       const { data, error } = await supabase.storage
         .from("bucket")
-        .createSignedUrl(todos.files.filename, 99999, {
+        .createSignedUrl(`folder/subfolder/${todos.title + todos.description}`, 6000, {
           download: true,
         });
-        setEdit({...edit, src: data?.signedUrl})
-    }
-    get()
-
+        setUrl(data?.signedUrl)
+    })();
   }, [todo])
-
   // убрать блокировку кнопки
   const updateHandler = () => {
     setDisabled((x) => !x);
@@ -147,7 +146,7 @@ export const Todo = ({ todos, del, state, setState }) => {
               cols="30"
               placeholder="DESCRIPTION"
             />
-            <a className="file" href={edit.src} target='_blank'><Icon28DocumentOutline/>{todos.files.filename}</a>
+            <a className="file" href={`${url}`} target='_blank'><Icon28DocumentOutline/></a>
           </>
         )}
       </article>
