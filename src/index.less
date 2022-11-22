@@ -1,0 +1,77 @@
+// compress: true
+@primery : rgba(0, 0, 0, 0.4);
+@secondary: rgba(0, 0, 0, 0.6);
+@tertiary: rgba(0, 0, 0, 0.45);
+@compleat: rgba(0, 50, 0, 0.6);
+@error: rgba(100, 0, 0, 0.5);
+@black: black;
+@white: white;
+@none: transparent;
+
+* {
+  box-sizing: border-box;
+  
+}
+body {
+  font-family: 'Ubuntu';
+  margin: 0;
+  background-color: @primery;
+}
+input:disabled,
+textarea:disabled {
+  color: @black !important;
+}
+.todo {
+  border: 1px solid @black;
+  padding: 10px 20px;
+  max-width: 680px;
+  color: @white;
+  margin: 0 auto;
+  background-color: @tertiary;
+  &-create {
+    margin: 20px auto;
+    max-width: 680px;
+    padding: 5px 10px;
+    background-color: @secondary;
+  }
+  &-create input,
+  textarea {
+    background-color: @secondary;
+  }
+  &-create div {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+.Icon {
+  cursor: pointer;
+}
+.todo .title {
+  display: flex;
+  justify-content: space-around;
+  color: @white;
+}
+.todo input {
+  background-color: @none;
+  outline: 0;
+  color: @white;
+}
+.todo textarea {
+  margin: 10px 0;
+  outline: 0;
+  resize: none;
+  width: 635px;
+  color: @white;
+  background-color: @none;
+}
+
+.performed {
+  background-color: @compleat;
+}
+.file {
+  text-decoration: none;
+  color: @white;
+}
+.error {
+  background-color: @error !important;
+}
