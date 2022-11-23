@@ -31,21 +31,19 @@ export const App = () => {
       setTodo(data);
     })();
   }, [state]);
-
-  console.log("state", todo);
   return (
     <>
       <CreateTodo state={state} setState={setState} />
       {/* мап всего списка, пропсы текущего листа для отрисовки и функция удалить */}
-      {/* фильтруем */}
+      {/* фильтрую. привожу х к булиан значению и фикс undefined значение при асинхронном запросе addHandler*/}
       {todo
-        .filter((x) => x.todos)
+        .filter((x) => !!x && x.todos)
         .map((x) => (
           <Todo
             state={state}
             setState={setState}
-            key={x.key}
-            todos={x.todos}
+            key={x?.key}
+            todos={x?.todos}
             del={del}
           />
         ))}

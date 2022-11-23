@@ -28,7 +28,7 @@ export const Todo = ({ todos, del, state, setState }) => {
   const [url, setUrl] = useState('')
   let d = todos?.date.replace(":", ".").replace(" ", ".").split(".");
   let date = new Date();
-  
+  console.log(todos)
     // получить ссылку на файл из БД
   useEffect(() => {
     +(async function get() {
@@ -102,7 +102,7 @@ export const Todo = ({ todos, del, state, setState }) => {
       ) {
         performedHandler();
       }
-    }, 60000);
+    }, 20000);
   };
   return (
     <>

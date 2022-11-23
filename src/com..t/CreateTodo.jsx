@@ -17,43 +17,33 @@ export const CreateTodo = ({ state, setState }) => {
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ybHFiZ3luZGpkaGhtbm1ndXR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2Njg5ODgxNzgsImV4cCI6MTk4NDU2NDE3OH0.gJ6ILUDqvmB-Xc-PEipet_o9AtqufW_rWyIhDSivXZw"
   );
   const [file, setFile] = useState({ name: "", path: "" });
-  
+
   //создаем ссылку на объект
   const ref = createRef();
-  // //регулярка
-   
+  
+
   // функция события клик (создать todo) подгрузить в БД
-  const handlerAdd = () => {
-    if (file.name == "") {
-      setFile("none");
-    }
+  const addHandler = async () => {
     if (value.title == "") return;
-    
     //запрос БД
-    try {
-      async function data() {
-        let { data, error } = await supabase.from("todo_list").insert({
-          todos: {
-            id: new Date(),
-            title: value.title,
-            description: value.description,
-            date: value.date,
-            performed: false,
-            filename: file.name,
-            path: file.path
-          },
-          key: new Date(),
-        });
-      }
-      // обновить стейт
-      setState((state) => state + 1);
-      setTodo([...todo, data()]);
-      setValue({ ...value, title: "", description: "" });
-      
-    } catch (e) {
-      console.log(e.message);
+    async function data() {
+      let { data, error } = await supabase.from("todo_list").insert({
+        todos: {
+          id: new Date(),
+          title: value.title,
+          description: value.description,
+          date: value.date,
+          performed: false,
+          filename: file.name,
+          path: file.path,
+        },
+        key: new Date(),
+      });
     }
-    
+    // обновить стейт
+    setState((state) => state + 1);
+    setTodo([...todo, await data()]);
+    setValue({ ...value, title: "", description: "" });
   };
   //добавить файл
   const filez = (e) => {
@@ -71,13 +61,14 @@ export const CreateTodo = ({ state, setState }) => {
         const { data, error } = await supabase.storage
           .from("bucket")
           .upload(`folder/subfolder/${file.path}`, file.name, {
-            cacheControl: '3600', upsert: true
+            cacheControl: "3600",
+            upsert: true,
           });
       })();
     } catch (e) {
       console.log(e.message);
     }
-    setState(state => state + 1)
+    setState((state) => state + 1);
   }, [file]);
 
   return (
@@ -98,7 +89,7 @@ export const CreateTodo = ({ state, setState }) => {
             })
           }
         />
-        <Icon28SendOutline onClick={handlerAdd} />
+        <Icon28SendOutline onClick={addHandler} />
       </div>
       <textarea
         value={value.description}
@@ -107,12 +98,7 @@ export const CreateTodo = ({ state, setState }) => {
         rows="5"
         placeholder="DESCRIPTION"
       ></textarea>
-      <input
-        name="upload"
-        type="file"
-        ref={ref}
-        onChange={filez}
-      />
+      <input name="upload" type="file" ref={ref} onChange={filez} />
     </div>
   );
 };
