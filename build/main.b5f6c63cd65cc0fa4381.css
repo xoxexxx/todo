@@ -10,6 +10,10 @@ input:disabled,
 textarea:disabled {
   color: black !important;
 }
+input,
+textarea {
+  min-width: 20px;
+}
 .todo {
   border: 1px solid black;
   padding: 10px 20px;

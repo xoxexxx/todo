@@ -10,7 +10,6 @@
 
 * {
   box-sizing: border-box;
-  
 }
 body {
   font-family: 'Ubuntu';
@@ -20,6 +19,9 @@ body {
 input:disabled,
 textarea:disabled {
   color: @black !important;
+}
+input,textarea {
+  min-width: 20px;
 }
 .todo {
   border: 1px solid @black;

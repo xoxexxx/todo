@@ -35,7 +35,7 @@ export const App = () => {
     <>
       <CreateTodo state={state} setState={setState} />
       {/* мап всего списка, пропсы текущего листа для отрисовки и функция удалить */}
-      {/* фильтрую. привожу х к булиан значению и фикс undefined значение при асинхронном запросе addHandler*/}
+      {/* фильтр. привести х к булиан значению и фикс undefined  при асинхронном запросе addHandler*/}
       {todo
         .filter((x) => !!x && x.todos)
         .map((x) => (

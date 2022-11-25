@@ -11,7 +11,7 @@ export const CreateTodo = ({ state, setState }) => {
   //значения  change инпутов
   const [value, setValue] = useState({ title: "", description: "", date: "" });
 
-  // подключаюсь к БД, 1 параметром URL 2 - API KEY
+  // БД, 1 параметром URL 2 - API KEY
   const supabase = createClient(
     "https://nrlqbgyndjdhhmnmgutu.supabase.co",
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ybHFiZ3luZGpkaGhtbm1ndXR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2Njg5ODgxNzgsImV4cCI6MTk4NDU2NDE3OH0.gJ6ILUDqvmB-Xc-PEipet_o9AtqufW_rWyIhDSivXZw"
@@ -20,7 +20,6 @@ export const CreateTodo = ({ state, setState }) => {
 
   //создаем ссылку на объект
   const ref = createRef();
-  
 
   // функция события клик (создать todo) подгрузить в БД
   const addHandler = async () => {
