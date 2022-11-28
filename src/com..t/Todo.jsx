@@ -26,9 +26,8 @@ export const Todo = ({ todos, del, state, setState }) => {
   // состояние редактирования
   const [edit, setEdit] = useState(todos);
   const [url, setUrl] = useState('')
-  let d = todos?.date.replace(":", ".").replace(" ", ".").split(".");
+  let d = todos?.date.replace("T", "-").replace(":", "-").split("-");
   let date = new Date();
-  console.log(todos)
     // получить ссылку на файл из БД
   useEffect(() => {
     +(async function get() {
@@ -39,7 +38,7 @@ export const Todo = ({ todos, del, state, setState }) => {
         });
         setUrl(data?.signedUrl)
     })();
-  }, [todo])
+  }, [])
   // убрать блокировку кнопки
   const updateHandler = () => {
     setDisabled((x) => !x);
@@ -76,6 +75,7 @@ export const Todo = ({ todos, del, state, setState }) => {
       })
       .eq("key", todos.id);
     setState((state) => state + 1);
+    console.log('handler')
   }
   //обновить изменения в БД
   async function donePerformedHandler() {
@@ -91,24 +91,24 @@ export const Todo = ({ todos, del, state, setState }) => {
     setState((state) => state + 1);
   }
   //проверка времени, при совпадении даты функция с классом
-  const update = () => {
-    setInterval(() => {
-      if (
-        +d[0] <= date.getHours() &&
-        +d[1] <= date.getMinutes() &&
-        +d[2] <= date.getDate() &&
-        +d[3] <= date.getMonth() + 1 &&
-        +d[4] <= date.getFullYear()
-      ) {
-        performedHandler();
-      }
-    }, 20000);
-  };
+// const tick = () => {
+//   if (
+//     +d[0] <= date.getFullYear() ||
+//     +d[1] <= date.getMonth() + 1 &&
+//     +d[2] <= date.getDate() &&
+//     +d[3] <= date.getHours() &&
+//     +d[4] <= date.getMinutes()
+//   ) {
+//    return performedHandler();
+//   }
+// }
+// setInterval(tick, 10000)
+
+    
   return (
     <>
       <article
         className={`todo ${todos.performed && "performed"}`}
-        onClick={update()}
       >
         <div className="title">
           <Icon28Menu onClick={showHandler} />
@@ -119,8 +119,8 @@ export const Todo = ({ todos, del, state, setState }) => {
             value={edit.title}
           />
           <input
+          type='datetime-local'
             disabled={disabled}
-            placeholder="FORMAT: 00:00 01.01.1970"
             value={edit.date}
             onChange={(e) => setEdit({ ...edit, date: e.target.value })}
           />

@@ -20,7 +20,6 @@ export const CreateTodo = ({ state, setState }) => {
 
   //создаем ссылку на объект
   const ref = createRef();
-
   // функция события клик (создать todo) подгрузить в БД
   const addHandler = async () => {
     if (value.title == "") return;
@@ -68,7 +67,7 @@ export const CreateTodo = ({ state, setState }) => {
       console.log(e.message);
     }
     setState((state) => state + 1);
-  }, [file]);
+  }, []);
 
   return (
     <div className="todo todo-create">
@@ -79,12 +78,12 @@ export const CreateTodo = ({ state, setState }) => {
           onChange={(e) => setValue({ ...value, title: e.target.value })}
         />{" "}
         <input
-          placeholder="FORMAT: 00:00 01.01.1970"
+          type='datetime-local'
           value={value.date}
           onChange={(e) =>
             setValue({
               ...value,
-              date: /[0-9]/.test(e.target.value) ? e.target.value : "",
+              date: e.target.value
             })
           }
         />
