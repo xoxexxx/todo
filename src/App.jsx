@@ -31,6 +31,7 @@ export const App = () => {
       setTodo(data);
     })();
   }, [state]);
+// todo.includes(undefined) ?  : ''
   return (
     <>
       <CreateTodo state={state} setState={setState} />
@@ -40,12 +41,12 @@ export const App = () => {
         .filter((x) => !!x && x.todos)
         .map((x) => (
           <Todo
-            state={state}
-            setState={setState}
-            key={x?.key}
-            todos={x?.todos}
-            del={del}
-          />
+          state={state}
+          setState={setState}
+          key={x?.key}
+          todos={x?.todos}
+          del={del}
+        />
         ))}
     </>
   );

@@ -14,7 +14,7 @@ import {
 } from "@vkontakte/icons";
 
 export const Todo = ({ todos, del, state, setState }) => {
-  // подключаюсь к БД, 1 параметром URL 2 - API KEY
+  //supabase
   const supabase = createClient(
     "https://nrlqbgyndjdhhmnmgutu.supabase.co",
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ybHFiZ3luZGpkaGhtbm1ndXR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2Njg5ODgxNzgsImV4cCI6MTk4NDU2NDE3OH0.gJ6ILUDqvmB-Xc-PEipet_o9AtqufW_rWyIhDSivXZw"
@@ -25,10 +25,30 @@ export const Todo = ({ todos, del, state, setState }) => {
   const [disabled, setDisabled] = useState(true); //блокировка
   // состояние редактирования
   const [edit, setEdit] = useState(todos);
-  const [url, setUrl] = useState('')
+  const [url, setUrl] = useState("");
   let d = todos?.date.replace("T", "-").replace(":", "-").split("-");
   let date = new Date();
-    // получить ссылку на файл из БД
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (
+        +d[0] <= date.getFullYear() &&
+        +d[1] <= date.getMonth() + 1 &&
+        +d[2] <= date.getDate() &&
+        +d[3] <= date.getHours() &&
+        +d[4] <= date.getMinutes()
+      ) {
+        return performedHandler();
+      }
+    }, 20000);
+    if (todos.performed) {
+      return () => {
+        clearInterval(intervalId);
+      };
+    }
+  }, [todos]);
+
+  // получить ссылку на файл из БД
   useEffect(() => {
     +(async function get() {
       const { data, error } = await supabase.storage
@@ -36,9 +56,9 @@ export const Todo = ({ todos, del, state, setState }) => {
         .createSignedUrl(`folder/subfolder/${todos.path}`, 6000, {
           download: true,
         });
-        setUrl(data?.signedUrl)
+      setUrl(data?.signedUrl);
     })();
-  }, [])
+  }, [state]);
   // убрать блокировку кнопки
   const updateHandler = () => {
     setDisabled((x) => !x);
@@ -75,7 +95,6 @@ export const Todo = ({ todos, del, state, setState }) => {
       })
       .eq("key", todos.id);
     setState((state) => state + 1);
-    console.log('handler')
   }
   //обновить изменения в БД
   async function donePerformedHandler() {
@@ -90,26 +109,10 @@ export const Todo = ({ todos, del, state, setState }) => {
       .eq("key", todos.id);
     setState((state) => state + 1);
   }
-  //проверка времени, при совпадении даты функция с классом
-// const tick = () => {
-//   if (
-//     +d[0] <= date.getFullYear() ||
-//     +d[1] <= date.getMonth() + 1 &&
-//     +d[2] <= date.getDate() &&
-//     +d[3] <= date.getHours() &&
-//     +d[4] <= date.getMinutes()
-//   ) {
-//    return performedHandler();
-//   }
-// }
-// setInterval(tick, 10000)
 
-    
   return (
     <>
-      <article
-        className={`todo ${todos.performed && "performed"}`}
-      >
+      <article className={`todo ${todos.performed && "performed"}`}>
         <div className="title">
           <Icon28Menu onClick={showHandler} />
           <input
@@ -119,7 +122,7 @@ export const Todo = ({ todos, del, state, setState }) => {
             value={edit.title}
           />
           <input
-          type='datetime-local'
+            type="datetime-local"
             disabled={disabled}
             value={edit.date}
             onChange={(e) => setEdit({ ...edit, date: e.target.value })}
@@ -146,7 +149,9 @@ export const Todo = ({ todos, del, state, setState }) => {
               cols="30"
               placeholder="DESCRIPTION"
             />
-            <a className="file" href={`${url}`} target='_blank'><Icon28DocumentOutline/></a>
+            <a className="file" href={`${url}`} target="_blank">
+              <Icon28DocumentOutline />
+            </a>
           </>
         )}
       </article>

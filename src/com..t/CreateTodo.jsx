@@ -39,8 +39,8 @@ export const CreateTodo = ({ state, setState }) => {
       });
     }
     // обновить стейт
-    setState((state) => state + 1);
     setTodo([...todo, await data()]);
+    setState((state) => state + 1);
     setValue({ ...value, title: "", description: "" });
   };
   //добавить файл
@@ -64,10 +64,8 @@ export const CreateTodo = ({ state, setState }) => {
           });
       })();
     } catch (e) {
-      console.log(e.message);
     }
-    setState((state) => state + 1);
-  }, []);
+  }, [state]);
 
   return (
     <div className="todo todo-create">
