@@ -6,21 +6,19 @@ import { Icon28SendOutline } from "@vkontakte/icons";
 import { createClient } from "@supabase/supabase-js";
 
 export const CreateTodo = ({ state, setState }) => {
-  //Стейт todo-листа
+
   const [todo, setTodo] = useContext(TodoContext);
   //значения  change инпутов
   const [value, setValue] = useState({ title: "", description: "", date: "" });
 
-  // БД, 1 параметром URL 2 - API KEY
   const supabase = createClient(
     "https://nrlqbgyndjdhhmnmgutu.supabase.co",
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ybHFiZ3luZGpkaGhtbm1ndXR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2Njg5ODgxNzgsImV4cCI6MTk4NDU2NDE3OH0.gJ6ILUDqvmB-Xc-PEipet_o9AtqufW_rWyIhDSivXZw"
   );
   const [file, setFile] = useState({ name: "", path: "" });
-
-  //создаем ссылку на объект
+  
   const ref = createRef();
-  // функция события клик (создать todo) подгрузить в БД
+
   const addHandler = async () => {
     if (value.title == "") return;
     //запрос БД
@@ -38,18 +36,17 @@ export const CreateTodo = ({ state, setState }) => {
         key: new Date(),
       });
     }
-    // обновить стейт
     setTodo([...todo, await data()]);
     setState((state) => state + 1);
     setValue({ ...value, title: "", description: "" });
   };
-  //добавить файл
+
   const filez = (e) => {
     e.preventDefault();
     const name = ref.current.files[0];
     setFile({ ...file, name: name, path: name.size });
   };
-  //файл в корзину.
+  
   useEffect(() => {
     if (!file.name) {
       return;
