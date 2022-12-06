@@ -19,11 +19,11 @@ export const Todo = ({ todos, del, state, setState }) => {
     "https://nrlqbgyndjdhhmnmgutu.supabase.co",
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ybHFiZ3luZGpkaGhtbm1ndXR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2Njg5ODgxNzgsImV4cCI6MTk4NDU2NDE3OH0.gJ6ILUDqvmB-Xc-PEipet_o9AtqufW_rWyIhDSivXZw"
   );
-  //стейт контекст приложения
+
   const [todo, setTodo] = useContext(TodoContext);
   const [show, setShow] = useState(false); //скрыть
   const [disabled, setDisabled] = useState(true); //блокировка
-  // состояние редактирования
+
   const [edit, setEdit] = useState(todos);
   const [url, setUrl] = useState("");
   let d = todos?.date.replace("T", "-").replace(":", "-").split("-");
@@ -48,7 +48,6 @@ export const Todo = ({ todos, del, state, setState }) => {
     }
   }, [todos]);
 
-  // получить ссылку на файл из БД
   useEffect(() => {
     +(async function get() {
       const { data, error } = await supabase.storage
@@ -59,11 +58,11 @@ export const Todo = ({ todos, del, state, setState }) => {
       setUrl(data?.signedUrl);
     })();
   }, [state]);
-  // убрать блокировку кнопки
+
   const updateHandler = () => {
     setDisabled((x) => !x);
   };
-  //правки
+
   async function setUpdateHandler() {
     setDisabled((x) => !x);
     const { error } = await supabase
@@ -79,11 +78,11 @@ export const Todo = ({ todos, del, state, setState }) => {
       .eq("key", todos.id);
     setState((state) => state + 1);
   }
-  //открыть description
+
   const showHandler = () => {
     setShow((x) => !x);
   };
-  //правки класс
+  
   async function performedHandler() {
     const { error } = await supabase
       .from("todo_list")
@@ -96,7 +95,7 @@ export const Todo = ({ todos, del, state, setState }) => {
       .eq("key", todos.id);
     setState((state) => state + 1);
   }
-  //обновить изменения в БД
+
   async function donePerformedHandler() {
     const { error } = await supabase
       .from("todo_list")
